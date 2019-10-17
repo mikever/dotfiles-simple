@@ -27,7 +27,6 @@
     Plug 'justinmk/vim-sneak'  " jump to a location with s{char}{char}
     Plug 'thiagoalessio/rainbow_levels.vim'  " toggle rainbow level colors
     Plug 'jiangmiao/auto-pairs' " auto-close pairs with cursor in middle
-        let g:AutoPairsShortcutToggle = <C-p>
     Plug 'mattn/emmet-vim'
         let g:user_emmet_leader_key=','  " {,,} to trigger
 
@@ -93,7 +92,8 @@
     Plug 'itchyny/lightline.vim'
 
     " Syntax
-    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " semantic highlighting for python
+    " semshi neovim only
+    " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " semantic highlighting for python
     Plug 'stephpy/vim-yaml'
     Plug 'moll/vim-node'
     Plug 'leafgarland/typescript-vim'
@@ -106,7 +106,6 @@
 
 
 " Theme/Layout
-    set termguicolors
     syntax enable
     colorscheme gruvbox
 
