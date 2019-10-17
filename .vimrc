@@ -8,60 +8,137 @@
     " Plugins will be downloaded under the specified directory
     call plug#begin('~/.vim/plugged')
 
-    Plug 'itchyny/lightline.vim'
-    Plug 'jacoborus/tender.vim'
-    Plug 'morhetz/gruvbox'
-    Plug 'stephpy/vim-yaml'
-    Plug 'kshenoy/vim-signature'
-    Plug 'moll/vim-node'
-    Plug 'luochen1990/rainbow'
+    Plug 'scrooloose/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+        map <Leader>d :NERDTreeToggle<CR>
+
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'francoiscabrol/ranger.vim'  " File explorer for vim
-    Plug 'rbgrouleff/bclose.vim'  " dependency for ranger.vim
-    Plug 'leafgarland/typescript-vim'
+
+    Plug 'kshenoy/vim-signature'  " toggle and display marks
+    Plug 'luochen1990/rainbow' " rainbow parentheses
     Plug 'thiagoalessio/rainbow_levels.vim'
-    Plug 'tmhedberg/SimpylFold'
-    Plug 'Konfekt/FastFold'
-    Plug 'adelarsq/vim-matchit'
-    Plug 'shinchu/lightline-gruvbox.vim'
-    Plug 'andreypopp/vim-colors-plain'
-    Plug 'alvan/vim-closetag'
+    Plug 'tmhedberg/SimpylFold' " Helps with better folds
+    Plug 'Konfekt/FastFold'  " manages auto-folds for better speed
+    Plug 'adelarsq/vim-matchit' " extension matching for % operator
+    Plug 'alvan/vim-closetag'  " auto-close HTML tags
+    Plug 'tpope/vim-surround'  " manage surroundings for text units
+    Plug 'tpope/vim-commentary'  " toggle comments: gc (motion) and gcc (line)
+    Plug 'tpope/vim-fugitive'  " Git wrapper :G
+    Plug 'justinmk/vim-sneak'  " jump to a location with s{char}{char}
+    Plug 'thiagoalessio/rainbow_levels.vim'  " toggle rainbow level colors
+    Plug 'jiangmiao/auto-pairs' " auto-close pairs with cursor in middle
+        let g:AutoPairsShortcutToggle = <C-p>
+    Plug 'mattn/emmet-vim'
+        let g:user_emmet_leader_key=','  " {,,} to trigger
+
+
+    Plug '/usr/local/opt/fzf'
+    Plug 'junegunn/fzf.vim'  " fzf must be installed above
+        "{{{
+            let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+            let $FZF_DEFAULT_OPTS="--preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null'"
+            let g:fzf_layout = { 'down': '40%' }
+            let g:fzf_nvim_statusline = 0  " disable statusline overwriting
+            let g:fzf_colors =
+            \ { 'fg':      ['fg', 'Normal'],
+              \ 'bg':      ['bg', 'Normal'],
+              \ 'hl':      ['fg', 'Comment'],
+              \ 'fg+':     ['fg', 'Conditional', 'CursorColumn', 'Normal'],
+              \ 'bg+':     ['bg', 'Conditional', 'Conditional'],
+              \ 'hl+':     ['fg', 'Statement'],
+              \ 'info':    ['fg', 'PreProc'],
+              \ 'border':  ['fg', 'Ignore'],
+              \ 'prompt':  ['fg', 'Conditional'],
+              \ 'pointer': ['fg', 'Exception'],
+              \ 'marker':  ['fg', 'Keyword'],
+              \ 'spinner': ['fg', 'Label'],
+              \ 'header':  ['fg', 'Comment'] }
+
+            nnoremap <silent> <leader><space> :Files<CR>
+            nnoremap <silent> <leader>b :Buffers<CR>
+        "}}}
+
+        " Optional
+        command! -bang -nargs=? -complete=dir Files
+          \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+        " Optional
+        command! Evals call fzf#run(fzf#wrap({'source': map(filter(map(reverse(range(histnr(':') - 1000, histnr(':'))), 'histget(":", v:val)'),'v:val =~ "^Eval "'), 'substitute(v:val, "^Eval ", "", "")'), 'sink': function('<sid>eval_handler')}))
+
+        " An action can be a reference to a function that processes selected lines
+        function! s:build_quickfix_list(lines)
+          call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+          copen
+          cc
+        endfunction
+
+        let g:fzf_action = {
+          \ 'ctrl-q': function('s:build_quickfix_list'),
+          \ 'ctrl-t': 'tab split',
+          \ 'ctrl-x': 'split',
+          \ 'ctrl-v': 'vsplit' }
+    
+    Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile' }  " Completion
+
+    Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html']  }
+        let g:prettier#autoformat = 0
+        autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+
+    " ColorSchemes
+    Plug 'morhetz/gruvbox'
+    Plug 'jacoborus/tender.vim'  " pleasant and colorful
+    Plug 'andreypopp/vim-colors-plain'  " minimal
+    Plug 'rakr/vim-two-firewatch'  " pleasant and beautiful
+
+    " Theme
+    Plug 'itchyny/lightline.vim'
+
+    " Syntax
+    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " semantic highlighting for python
+    Plug 'stephpy/vim-yaml'
+    Plug 'moll/vim-node'
+    Plug 'leafgarland/typescript-vim'
     Plug 'rust-lang/rust.vim'
-    Plug 'tpope/vim-surround'
-    Plug 'justinmk/vim-sneak'
     Plug 'JulesWang/css.vim'
+    Plug 'maxmellon/vim-jsx-pretty'
 
     " Plug List ends here. Plugins become visible to Vim after this call
     call plug#end()
 
+
 " Theme/Layout
-
-    " fixes glitch? in colors when using vim with tmux
-    set background=dark
-    set t_Co=256
-
+    set termguicolors
     syntax enable
-    set background=dark
-
-    " gruvbox theme settings - must be before colorscheme gruvbox
-        let g:gruvbox_italicize_strings='1'
-        let g:gruvbox_contrast_dark='soft'
-        let g:gruvbox_contrast_light='soft'
-
-        silent colorscheme gruvbox
-
-   " lightline
-    let g:lightline = {}
-    let g:lightline.colorscheme = 'gruvbox'
+    colorscheme gruvbox
 
     set colorcolumn=100
+    " set background=dark
+    set t_Co=256  " fixes glitch? in colors when using vim with tmux
+
+" lightline
+    let g:lightline = {
+        \ 'colorscheme': 'gruvbox',
+        \ }
+
+    set laststatus=2  " make sure bar isn't a blank black line
+    set noshowmode  " --INSERT-- not necessary since lightline handles it
+
+" vimdiff colorscheme
+    if &diff
+        syntax off
+        colorscheme apprentice
+
+        let g:lightline = {
+            \ 'colorscheme': 'apprentice',
+            \ }
+    endif
 
 " UI Layout
     set number              " show line numbers
     set relativenumber
     set showcmd             " show command in bottom bar
     set nocursorline        " highlight current line
-    set wildmode=longest,list
+    " set wildmode=longest,list
+    " set wildmenu
     set wildmenu
     set lazyredraw
     set showmatch           " higlight matching parenthesis
@@ -69,7 +146,12 @@
     set wrap linebreak nolist   " does not change text on break; simply displays on multiple lines
     set textwidth=0
     set wrapmargin=0
-    set laststatus=2
+
+" Functionality Settings
+    " Set the working directory to wherever the open file lives `:set autochdir!` to toggle
+    set autochdir
+    " `gf` opens file under cursor in a new horizontal split
+    nnoremap gf :horizontal wincmd f<CR>
 
 " Leader Shortcuts
 
@@ -107,7 +189,7 @@
     set nofoldenable
 
 " Paste
-        set pastetoggle=<f5>        " <FN>5 on my keeb
+        set pastetoggle=<F5>        " <FN>5 on my keeb
 
 " Indents and Spaces
     set tabstop=4           " tabs are at proper location
@@ -118,6 +200,9 @@
 
     filetype plugin on      " plugin file is loaded when file is edited
     filetype indent on      " detect filetype. works with syntax highlighting; indent detection on
+
+" Disable automatic commenting on newline
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Swap files - moved them into their own space
     set backupdir=~/.vim/backup//
@@ -157,8 +242,8 @@
     map <C-l> :bnext<CR>
 
 " Insert Time
-    :nnoremap <F5> "=strftime("%a %b, %d %Y")<CR>Po
-    :inoremap <F5> "<C-R>=strftime("%a %b, %d %Y")<CR>o
+    :nnoremap <F4> "=strftime("%a %b, %d %Y")<CR>Po
+    :inoremap <F4> "<C-R>=strftime("%a %b, %d %Y")<CR>o
 
 " CtrlP
     let g:ctrlp_match_window = 'bottom,order:ttb'
@@ -302,4 +387,3 @@
                     \ pumvisible() ? "\<C-n>" :
                     \ <SID>check_back_space() ? "\<Tab>" :
                     \ coc#refresh()
-
