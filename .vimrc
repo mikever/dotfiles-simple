@@ -204,9 +204,9 @@
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Swap files - moved them into their own space
-    set backupdir=~/.vim/backup//
-    set directory=~/.vim/swap//
-    set undodir=~/.vim/undo//
+    set backupdir=~/.vim/.backup//
+    set directory=~/.vim/.swap//
+    set undodir=~/.vim/.undo//
 
 " Search all subdirs
     set backspace=indent,eol,start
@@ -269,13 +269,6 @@
 " Testing
     let test#strategy = 'neovim'
     let test#python#runner = 'nose'
-
-" Backups
-    set backup
-    set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-    set backupskip=/tmp/*,/private/tmp/*
-    set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-    set writebackup
 
 " Sneak Configuration
     let g:sneak#s_next = 1
