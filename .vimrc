@@ -81,6 +81,8 @@
     Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html']  }
         let g:prettier#autoformat = 0
         autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+    Plug 'junegunn/goyo.vim'
+        nnoremap <Leader>z :Goyo<CR>
 
     " ColorSchemes
     Plug 'morhetz/gruvbox'
