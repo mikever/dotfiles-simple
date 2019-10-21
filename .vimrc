@@ -89,6 +89,7 @@
     Plug 'jacoborus/tender.vim'  " pleasant and colorful
     Plug 'andreypopp/vim-colors-plain'  " minimal
     Plug 'rakr/vim-two-firewatch'  " pleasant and beautiful
+    Plug 'romainl/Apprentice'  " Lighter colors, used for vimdiff
 
     " Theme
     Plug 'itchyny/lightline.vim'
