@@ -1,114 +1,61 @@
-" Vim Plug
+" Autoload plugins
     if empty(glob('~/.vim/autoload/plug.vim'))
       silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 
-    " Plugins will be downloaded under the specified directory
-    call plug#begin('~/.vim/plugged')
+" Plugins will be downloaded under the specified directory
+call plug#begin('~/.vim/plugged')
 
     Plug 'scrooloose/nerdtree'
     Plug 'Xuyuanp/nerdtree-git-plugin'
-        map <Leader>d :NERDTreeToggle<CR>
+        " Autoclose nerdtree after file is opened
+        let NERDTreeQuitOnOpen=1
 
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'itchyny/lightline.vim'
 
+    Plug 'stephpy/vim-yaml'
     Plug 'kshenoy/vim-signature'  " toggle and display marks
-    Plug 'luochen1990/rainbow' " rainbow parentheses
-    Plug 'thiagoalessio/rainbow_levels.vim'
-    Plug 'tmhedberg/SimpylFold' " Helps with better folds
+    Plug 'moll/vim-node'
+    Plug 'luochen1990/rainbow'  " rainbow parentheses
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'leafgarland/typescript-vim'
+    Plug 'thiagoalessio/rainbow_levels.vim'  " toggle rainbow level colors
+    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " semantic highlighting for python
+    Plug 'tmhedberg/SimpylFold'  " Helps with better folds
     Plug 'Konfekt/FastFold'  " manages auto-folds for better speed
-    Plug 'adelarsq/vim-matchit' " extension matching for % operator
+    Plug 'adelarsq/vim-matchit'  " extension matching for % operator
     Plug 'alvan/vim-closetag'  " auto-close HTML tags
+    Plug 'rust-lang/rust.vim'
     Plug 'tpope/vim-surround'  " manage surroundings for text units
     Plug 'tpope/vim-commentary'  " toggle comments: gc (motion) and gcc (line)
-    Plug 'tpope/vim-fugitive'  " Git wrapper :G
     Plug 'justinmk/vim-sneak'  " jump to a location with s{char}{char}
-    Plug 'thiagoalessio/rainbow_levels.vim'  " toggle rainbow level colors
-    Plug 'jiangmiao/auto-pairs' " auto-close pairs with cursor in middle
+    " Plug 'tpope/vim-fugitive'  " Git wrapper :G
+    Plug 'jiangmiao/auto-pairs'  " auto-close pairs with cursor in middle
+    " let g:AutoPairsShortcutToggle = <M-m>
     Plug 'mattn/emmet-vim'
-        let g:user_emmet_leader_key=','  " {,,} to trigger
-
-
     Plug '/usr/local/opt/fzf'
     Plug 'junegunn/fzf.vim'  " fzf must be installed above
-        "{{{
-            let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
-            let $FZF_DEFAULT_OPTS="--preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null'"
-            let g:fzf_layout = { 'down': '40%' }
-            let g:fzf_nvim_statusline = 0  " disable statusline overwriting
-            let g:fzf_colors =
-            \ { 'fg':      ['fg', 'Normal'],
-              \ 'bg':      ['bg', 'Normal'],
-              \ 'hl':      ['fg', 'Comment'],
-              \ 'fg+':     ['fg', 'Conditional', 'CursorColumn', 'Normal'],
-              \ 'bg+':     ['bg', 'Conditional', 'Conditional'],
-              \ 'hl+':     ['fg', 'Statement'],
-              \ 'info':    ['fg', 'PreProc'],
-              \ 'border':  ['fg', 'Ignore'],
-              \ 'prompt':  ['fg', 'Conditional'],
-              \ 'pointer': ['fg', 'Exception'],
-              \ 'marker':  ['fg', 'Keyword'],
-              \ 'spinner': ['fg', 'Label'],
-              \ 'header':  ['fg', 'Comment'] }
-
-            nnoremap <silent> <leader><space> :Files<CR>
-            nnoremap <silent> <leader>b :Buffers<CR>
-        "}}}
-
-        " Optional
-        command! -bang -nargs=? -complete=dir Files
-          \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-        " Optional
-        command! Evals call fzf#run(fzf#wrap({'source': map(filter(map(reverse(range(histnr(':') - 1000, histnr(':'))), 'histget(":", v:val)'),'v:val =~ "^Eval "'), 'substitute(v:val, "^Eval ", "", "")'), 'sink': function('<sid>eval_handler')}))
-
-        " An action can be a reference to a function that processes selected lines
-        function! s:build_quickfix_list(lines)
-          call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-          copen
-          cc
-        endfunction
-
-        let g:fzf_action = {
-          \ 'ctrl-q': function('s:build_quickfix_list'),
-          \ 'ctrl-t': 'tab split',
-          \ 'ctrl-x': 'split',
-          \ 'ctrl-v': 'vsplit' }
-    
-    Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile' }  " Completion
-
+    Plug 'junegunn/goyo.vim'
+        nnoremap <Leader>z :Goyo<CR>
+    Plug 'maxmellon/vim-jsx-pretty'
     Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html']  }
         let g:prettier#autoformat = 0
         autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-    Plug 'junegunn/goyo.vim'
-        nnoremap <Leader>z :Goyo<CR>
+
+    " Plug List ends here. Plugins become visible to Vim after this call
 
     " ColorSchemes
     Plug 'morhetz/gruvbox'
-    Plug 'jacoborus/tender.vim'  " pleasant and colorful
-    Plug 'andreypopp/vim-colors-plain'  " minimal
-    Plug 'rakr/vim-two-firewatch'  " pleasant and beautiful
-    Plug 'romainl/Apprentice'  " Lighter colors, used for vimdiff
+    Plug 'jacoborus/tender.vim'
+    Plug 'rakr/vim-two-firewatch'
+    Plug 'romainl/Apprentice'
 
-    " Theme
-    Plug 'itchyny/lightline.vim'
-
-    " Syntax
-    " semshi neovim only
-    " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " semantic highlighting for python
-    Plug 'stephpy/vim-yaml'
-    Plug 'moll/vim-node'
-    Plug 'leafgarland/typescript-vim'
-    Plug 'rust-lang/rust.vim'
-    Plug 'JulesWang/css.vim'
-    Plug 'maxmellon/vim-jsx-pretty'
-
-    " Plug List ends here. Plugins become visible to Vim after this call
     call plug#end()
 
-
 " Theme/Layout
+    set termguicolors
     syntax enable
     colorscheme gruvbox
 
@@ -139,8 +86,8 @@
     set relativenumber
     set showcmd             " show command in bottom bar
     set nocursorline        " highlight current line
+    " set wildmode
     " set wildmode=longest,list
-    " set wildmenu
     set wildmenu
     set lazyredraw
     set showmatch           " higlight matching parenthesis
@@ -156,14 +103,12 @@
     nnoremap gf :horizontal wincmd f<CR>
 
 " Leader Shortcuts
-
     " Buffer list shortcut
     nnoremap <Leader>b :buffers<CR>:buffer<Space>
 
     " Rainbow Levels
     map <Leader>l :RainbowLevelsToggle<CR>
 
-    " Rainbow indent custom colors
     if &l:background == 'dark'
         hi! RainbowLevel0 ctermfg=142 guifg=#b8bb26
         hi! RainbowLevel1 ctermfg=108 guifg=#8ec07c
@@ -191,25 +136,73 @@
     set nofoldenable
 
 " Paste
-        set pastetoggle=<F5>        " <FN>5 on my keeb
+    set pastetoggle=<F5>        " <FN>5 on my keeb
 
 " Indents and Spaces
-    set tabstop=4           " tabs are at proper location
-    set expandtab           " don't use actual tab character
-    set shiftwidth=4        " indenting is 4 spaces
+    " Flag unnecessary whitespace
+    highlight ExtraWhitespace ctermbg=red guibg=red
+    match ExtraWhitespace /\s\+$/
+    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+    autocmd BufWinLeave * call clearmatches()
+
+    " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+    set tabstop=4  " Width of tab character
+    set softtabstop=0  " Fine tunes the amount of whitespace added
+    set shiftwidth=4  " Determines the amount of whitespace to add in normal mode
+    set expandtab  " When on uses space instead of tabs
+    set smarttab
+
+    " New configuration
+
+    " tabstop: Set tabstop to tell vim how many columns a tab counts for. Linux kernal
+    " code expects each tab to be eight columns wide. Visual Studio expects
+    " each tab to be four columns wide.
+
+    " expandtab: With this set, hitting tab in insert mode will produce the
+    " appropriate number of spaces
+
+    " shiftwidth: Set to control how manyu columns text is indented with the
+    " reindent operations (<< and >>) and automatic C-style indentation.
+
+    " softtabstop: Controls how many columns vim uses when you hit Tab in
+    " insert mode. If softtabsstop is less than tabstop and expandtab is not
+    " set, vim will use a combination of tabs and spaces to make up the
+    " desired spacing. if softtabstop equals tabstop and expandtab is not set,
+    " vim will always use tbas. When expandtab is set, vim will always use the
+    " appropriate number of spaces.
+
+    " To set each indentation level four spaces, and tabs are not used:
+    " set softtabstop=4 shiftwidth=4 expandtab
+
+    " Show tabs
+    " set list!
+    " set listchars=tab:>-
+
+    syntax match Tab /\t/
+    hi Tab gui=underline guifg=blue ctermbg=blue
+
     set autoindent          " turns it on
     set smartindent         " does the right thing (mostly) in programs
+    " set modelines=1         " 1 line of vim-specific code at top of file
 
     filetype plugin on      " plugin file is loaded when file is edited
     filetype indent on      " detect filetype. works with syntax highlighting; indent detection on
+
+" netrw settings
+    " let g:netrw_list_hide='.*\.pyc$'            " Hide certain files
+    " autocmd FileType netrw setl bufhidden=wipe  " Deal with bug that makes netrw buffer difficult to close
+    " let g:netrw_bufsettings = 'relativenumber'
 
 " Disable automatic commenting on newline
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Swap files - moved them into their own space
-    set backupdir=~/.vim/.backup//
-    set directory=~/.vim/.swap//
-    set undodir=~/.vim/.undo//
+    set backupdir=~/.vim/backup//
+    set directory=~/.vim/swap//
+    set undodir=~/.vim/undo//
 
 " Search all subdirs
     set backspace=indent,eol,start
@@ -221,11 +214,84 @@
     set hlsearch            " highlight all matches
     set smartcase           " search is case-sensitive if it contains an uppercase letter
 
-" clear highlights
+    " clear highlights
     nmap <C-_> :noh<CR>
 
+" fzf
+    "{{{
+        let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
+        let $FZF_DEFAULT_OPTS="--preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null'"
+        let g:fzf_layout = { 'down': '40%' }
+        let g:fzf_nvim_statusline = 0  " disable statusline overwriting
+        let g:fzf_colors =
+        \ { 'fg':      ['fg', 'Normal'],
+          \ 'bg':      ['bg', 'Normal'],
+          \ 'hl':      ['fg', 'Comment'],
+          \ 'fg+':     ['fg', 'Conditional', 'CursorColumn', 'Normal'],
+          \ 'bg+':     ['bg', 'Conditional', 'Conditional'],
+          \ 'hl+':     ['fg', 'Statement'],
+          \ 'info':    ['fg', 'PreProc'],
+          \ 'border':  ['fg', 'Ignore'],
+          \ 'prompt':  ['fg', 'Conditional'],
+          \ 'pointer': ['fg', 'Exception'],
+          \ 'marker':  ['fg', 'Keyword'],
+          \ 'spinner': ['fg', 'Label'],
+          \ 'header':  ['fg', 'Comment'] }
+
+        nnoremap <silent> <leader><space> :Files<CR>
+        nnoremap <silent> <leader>b :Buffers<CR>
+    "}}}
+
+    " Optional
+    command! -bang -nargs=? -complete=dir Files
+      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+    " Optional
+    command! Evals call fzf#run(fzf#wrap({'source': map(filter(map(reverse(range(histnr(':') - 1000, histnr(':'))), 'histget(":", v:val)'),'v:val =~ "^Eval "'), 'substitute(v:val, "^Eval ", "", "")'), 'sink': function('<sid>eval_handler')}))
+
+    " An action can be a reference to a function that processes selected lines
+    function! s:build_quickfix_list(lines)
+      call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+      copen
+      cc
+    endfunction
+
+    let g:fzf_action = {
+      \ 'ctrl-q': function('s:build_quickfix_list'),
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
+
+" pylint configuration
+set makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
+set errorformat=%f:%l:\ %m
+
+
 " Remappings
-    imap jk <Esc>
+    " Using karabiner to remap tap-capslock to Esc
+    " imap jk <Esc>
+
+" Auto break and insert into brackets
+"    inoremap ( ()<Esc>:call BC_AddChar(")")<CR>i
+"    inoremap { {<CR>}<Esc>:call BC_AddChar("}")<CR><Esc>kA<CR>
+"    inoremap [ []<Esc>:call BC_AddChar("]")<CR>i
+""Remove \""
+"    inoremap \" \""<Esc>:call BC_AddChar("\"")<CR>i
+"    " jump out of parenthesis
+"    inoremap <C-j> <Esc>:call search(BC_GetChar(), \"W")<CR>a
+"
+"    function! BC_AddChar(schar)
+"     if exists("b:robstack")
+"     let b:robstack = b:robstack . a:schar
+"     else
+"     let b:robstack = a:schar
+"     endif
+"    endfunction
+"
+"    function! BC_GetChar()
+"     let l:char = b:robstack[strlen(b:robstack)-1]
+"     let b:robstack = strpart(b:robstack, 0, strlen(b:robstack)-1)
+"     return l:char
+"    endfunction
 
 " Movement
     noremap <Up>    <Nop>
@@ -259,6 +325,7 @@
         autocmd VimEnter * highlight clear SignColumn
         autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md,*.rb :call <SID>StripTrailingWhitespaces()
         autocmd BufEnter *.cls setlocal filetype=java
+        " autocmd BufEnter *.zsh-theme setlocal filetype=zsh
         autocmd BufEnter Makefile setlocal noexpandtab
         autocmd BufEnter *.sh,*.js,*.md setlocal tabstop=2
         autocmd BufEnter *.sh,*.js,*.md setlocal shiftwidth=2
@@ -267,14 +334,28 @@
         autocmd BufEnter *.md setlocal ft=markdown
         autocmd BufEnter *.go setlocal noexpandtab
         autocmd BufEnter *.avsc setlocal ft=json
+        " Sets current working directory to current file's directory, to help NERDTree
+        " autocmd BufEnter * lcd %:p:h
     augroup END
+
+" NERDTree
+    map <Leader>d :NERDTreeToggle<CR>
+    set shell=sh
 
 " Testing
     let test#strategy = 'neovim'
     let test#python#runner = 'nose'
 
+" Backups
+    set backup
+    set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+    set backupskip=/tmp/*,/private/tmp/*
+    set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+    set writebackup
+
 " Sneak Configuration
     let g:sneak#s_next = 1
+
 
 " vim rainbow configuration
     let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
@@ -313,6 +394,11 @@
                 " Add > at current position without closing the current tag, default is ''
                 let g:closetag_close_shortcut = '<leader>>'
 
+
+" -- EMMET CONFIG --
+    " redefine trigger key. Type `,,` to trigger
+    let g:user_emmet_leader_key=','
+
 " Functions
 
     " Changing cursor shape per mode
@@ -330,7 +416,8 @@
             let &t_EI .= "\<Esc>[2 q"
             autocmd VimLeave * silent !echo -ne "\033[0 q"
         endi
- " strips trailing whitespace at the end of files. this
+
+    " strips trailing whitespace at the end of files. this
     " is called on buffer write in the autogroup above.
         function! <SID>StripTrailingWhitespaces()
             " save last search & cursor position
@@ -368,14 +455,14 @@
             endif
         endfunc
 
-  " Coc Configuration
+    " Coc Configuration
         " To get correct comment highlighting:
         autocmd FileType json syntax match Comment +\/\/.\+$+
 
         " use <tab> for trigger completion and navigate to the next complete item
         function! s:check_back_space() abort
-            let col = col('.') - 1
-            return !col || getline('.')[col - 1]  =~ '\s'
+           let col = col('.') - 1
+           return !col || getline('.')[col - 1]  =~ '\s'
         endfunction
 
         inoremap <silent><expr> <Tab>
