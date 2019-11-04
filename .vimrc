@@ -22,7 +22,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'leafgarland/typescript-vim'
     Plug 'thiagoalessio/rainbow_levels.vim'  " toggle rainbow level colors
-    Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}  " semantic highlighting for python
     Plug 'tmhedberg/SimpylFold'  " Helps with better folds
     Plug 'Konfekt/FastFold'  " manages auto-folds for better speed
     Plug 'adelarsq/vim-matchit'  " extension matching for % operator
@@ -57,7 +56,6 @@ call plug#begin('~/.vim/plugged')
     call plug#end()
 
 " Theme/Layout
-    set termguicolors  " neovim does this automatically
     colorscheme gruvbox
     let g:gruvbox_contrast_dark = 'soft'
     set background=dark
