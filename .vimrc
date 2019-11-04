@@ -13,7 +13,7 @@ call plug#begin('~/.vim/plugged')
         " Autoclose nerdtree after file is opened
         let NERDTreeQuitOnOpen=1
 
-    Plug 'itchyny/lightline.vim'
+    " Plug 'itchyny/lightline.vim'
 
     Plug 'stephpy/vim-yaml'
     Plug 'kshenoy/vim-signature'  " toggle and display marks
@@ -76,9 +76,9 @@ let g:indentLine_setColors = 0
 " }}
 
 " lightline
-    let g:lightline = {
-        \ 'colorscheme': 'gruvbox',
-        \ }
+"     let g:lightline = {
+"         \ 'colorscheme': 'gruvbox',
+"         \ }
 
     set laststatus=2  " make sure bar isn't a blank black line
     set noshowmode  " --INSERT-- not necessary since lightline handles it
@@ -442,7 +442,7 @@ set errorformat=%f:%l:\ %m
         set shortmess+=c
 
         " always show signcolumns
-        set signcolumn=yes
+        " set signcolumn=yes
 
         " get correct comment highlighting:
         autocmd FileType json syntax match Comment +\/\/.\+$+
