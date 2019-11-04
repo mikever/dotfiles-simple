@@ -44,7 +44,7 @@ call plug#begin('~/.vim/plugged')
         let g:prettier#autoformat = 0
         autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
-    " Plug List ends here. Plugins become visible to Vim after this call
+    Plug 'Yggdroot/indentLine'  " vertical lines for indentation level
 
     " ColorSchemes
     Plug 'morhetz/gruvbox'
@@ -52,16 +52,30 @@ call plug#begin('~/.vim/plugged')
     Plug 'rakr/vim-two-firewatch'
     Plug 'romainl/Apprentice'
 
+
+    " Plug List ends here. Plugins become visible to Vim after this call
     call plug#end()
 
 " Theme/Layout
-    set termguicolors
-    syntax enable
+    set termguicolors  " neovim does this automatically
     colorscheme gruvbox
-
+    let g:gruvbox_contrast_dark = 'soft'
+    set background=dark
+    syntax enable
     set colorcolumn=100
-    " set background=dark
-    set t_Co=256  " fixes glitch? in colors when using vim with tmux
+    " set t_Co=256  " fixes glitch? in colors when using vim with tmux
+
+" IndentLine {{
+let g:indentLine_char = '┊'
+" let g:indentLine_char = '│'
+" let g:indentLine_char = '┋'
+" let g:indentLine_char = '┇'
+" let g:indentLine_char = ''
+" let g:indentLine_char = ''
+" let g:indentLine_first_char = '|'
+let g:indentLine_showFirstIndentLevel = 0
+let g:indentLine_setColors = 0
+" }}
 
 " lightline
     let g:lightline = {
@@ -86,8 +100,6 @@ call plug#begin('~/.vim/plugged')
     set relativenumber
     set showcmd             " show command in bottom bar
     set nocursorline        " highlight current line
-    " set wildmode
-    " set wildmode=longest,list
     set wildmenu
     set lazyredraw
     set showmatch           " higlight matching parenthesis
@@ -191,11 +203,6 @@ call plug#begin('~/.vim/plugged')
     filetype plugin on      " plugin file is loaded when file is edited
     filetype indent on      " detect filetype. works with syntax highlighting; indent detection on
 
-" netrw settings
-    " let g:netrw_list_hide='.*\.pyc$'            " Hide certain files
-    " autocmd FileType netrw setl bufhidden=wipe  " Deal with bug that makes netrw buffer difficult to close
-    " let g:netrw_bufsettings = 'relativenumber'
-
 " Disable automatic commenting on newline
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
@@ -265,34 +272,6 @@ call plug#begin('~/.vim/plugged')
 set makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
 set errorformat=%f:%l:\ %m
 
-
-" Remappings
-    " Using karabiner to remap tap-capslock to Esc
-    " imap jk <Esc>
-
-" Auto break and insert into brackets
-"    inoremap ( ()<Esc>:call BC_AddChar(")")<CR>i
-"    inoremap { {<CR>}<Esc>:call BC_AddChar("}")<CR><Esc>kA<CR>
-"    inoremap [ []<Esc>:call BC_AddChar("]")<CR>i
-""Remove \""
-"    inoremap \" \""<Esc>:call BC_AddChar("\"")<CR>i
-"    " jump out of parenthesis
-"    inoremap <C-j> <Esc>:call search(BC_GetChar(), \"W")<CR>a
-"
-"    function! BC_AddChar(schar)
-"     if exists("b:robstack")
-"     let b:robstack = b:robstack . a:schar
-"     else
-"     let b:robstack = a:schar
-"     endif
-"    endfunction
-"
-"    function! BC_GetChar()
-"     let l:char = b:robstack[strlen(b:robstack)-1]
-"     let b:robstack = strpart(b:robstack, 0, strlen(b:robstack)-1)
-"     return l:char
-"    endfunction
-
 " Movement
     noremap <Up>    <Nop>
     noremap <Down>  <Nop>
@@ -356,9 +335,8 @@ set errorformat=%f:%l:\ %m
 " Sneak Configuration
     let g:sneak#s_next = 1
 
-
 " vim rainbow configuration
-    let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+    let g:rainbow_active = 0 "set to 0 if you want to enable it later via :RainbowToggle
 
 " closetag configuration
     " filenames like *.xml, *.html, *.xhtml, ...
@@ -456,7 +434,19 @@ set errorformat=%f:%l:\ %m
         endfunc
 
     " Coc Configuration
-        " To get correct comment highlighting:
+        " better display for messages
+        set cmdheight=2
+
+        " diagnostic messages default is 4000, but will give bad experience
+        set updatetime=300
+
+        " don't give |ins-completion-menu| messages
+        set shortmess+=c
+
+        " always show signcolumns
+        set signcolumn=yes
+
+        " get correct comment highlighting:
         autocmd FileType json syntax match Comment +\/\/.\+$+
 
         " use <tab> for trigger completion and navigate to the next complete item
@@ -469,3 +459,43 @@ set errorformat=%f:%l:\ %m
                     \ pumvisible() ? "\<C-n>" :
                     \ <SID>check_back_space() ? "\<Tab>" :
                     \ coc#refresh()
+
+        " use K to show documentation in preview window
+        nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+        function! s:show_documentation()
+            if (index(['vim','help'], &filetype) >= 0)
+                execute 'h '.expand('<cword>')
+            else
+                call CocAction('doHover')
+            endif
+        endfunction
+
+        " Remap for rename current word
+        nmap <leader>rn <Plug>(coc-rename)
+
+        " Remap for format selected region
+        xmap <leader>f  <Plug>(coc-format-selected)
+        nmap <leader>f  <Plug>(coc-format-selected)
+
+        " Use `:Format` to format current buffer
+        command! -nargs=0 Format :call CocAction('format')
+
+        " Using CocList
+        " Show all diagnostics
+        nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+        " Manage extensions
+        nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+        " Show commands
+        nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+        " Find symbol of current document
+        nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+        " Search workspace symbols
+        nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+        " Do default action for next item.
+        nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+        " Do default action for previous item.
+        nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+        " Resume latest coc list
+        nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
