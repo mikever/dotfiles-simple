@@ -13,7 +13,7 @@ call plug#begin('~/.vim/plugged')
         " Autoclose nerdtree after file is opened
         let NERDTreeQuitOnOpen=1
 
-    " Plug 'itchyny/lightline.vim'
+    Plug 'itchyny/lightline.vim'
 
     Plug 'stephpy/vim-yaml'
     Plug 'kshenoy/vim-signature'  " toggle and display marks
@@ -75,10 +75,10 @@ let g:indentLine_showFirstIndentLevel = 0
 let g:indentLine_setColors = 0
 " }}
 
-" lightline
-"     let g:lightline = {
-"         \ 'colorscheme': 'gruvbox',
-"         \ }
+lightline
+    let g:lightline = {
+        \ 'colorscheme': 'darcula',
+        \ }
 
     set laststatus=2  " make sure bar isn't a blank black line
     set noshowmode  " --INSERT-- not necessary since lightline handles it
