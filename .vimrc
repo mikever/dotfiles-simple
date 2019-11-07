@@ -107,6 +107,10 @@ let g:indentLine_setColors = 0
     set wrapmargin=0
 
 " Functionality Settings
+    " Save (update) with fewer keystrokes
+        nnoremap <C-S> :update<cr>
+        inoremap <C-S> <Esc>:update<cr>gi
+
     " Set the working directory to wherever the open file lives `:set autochdir!` to toggle
     set autochdir
     " `gf` opens file under cursor in a new horizontal split
