@@ -304,7 +304,7 @@ set errorformat=%f:%l:\ %m
     augroup configgroup
         autocmd!
         autocmd VimEnter * highlight clear SignColumn
-        autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md,*.rb :call <SID>StripTrailingWhitespaces()
+        " autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md,*.rb :call <SID>StripTrailingWhitespaces()
         autocmd BufEnter *.cls setlocal filetype=java
         " autocmd BufEnter *.zsh-theme setlocal filetype=zsh
         autocmd BufEnter Makefile setlocal noexpandtab
@@ -399,15 +399,15 @@ set errorformat=%f:%l:\ %m
 
     " strips trailing whitespace at the end of files. this
     " is called on buffer write in the autogroup above.
-        function! <SID>StripTrailingWhitespaces()
-            " save last search & cursor position
-            let _s=@/
-            let l = line(".")
-            let c = col(".")
-            %s/\s\+$//e
-            let @/=_s
-            call cursor(l, c)
-        endfunc
+        " function! <SID>StripTrailingWhitespaces()
+        "     " save last search & cursor position
+        "     let _s=@/
+        "     let l = line(".")
+        "     let c = col(".")
+        "     %s/\s\+$//e
+        "     let @/=_s
+        "     call cursor(l, c)
+        " endfunc
 
         function! <SID>CleanFile()
             " Preparation: save last search, and cursor position.
