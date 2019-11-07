@@ -75,7 +75,7 @@ let g:indentLine_showFirstIndentLevel = 0
 let g:indentLine_setColors = 0
 " }}
 
-lightline
+" lightline
     let g:lightline = {
         \ 'colorscheme': 'darcula',
         \ }
