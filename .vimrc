@@ -27,7 +27,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'adelarsq/vim-matchit'  " extension matching for % operator
     Plug 'alvan/vim-closetag'  " auto-close HTML tags
     Plug 'rust-lang/rust.vim'
-    Plug 'tpope/vim-surround'  " manage surroundings for text units
+    Plug 'tmsvg/pear-tree'          " Smarter auto-pairs for quotes, html tags, etc
     Plug 'tpope/vim-commentary'  " toggle comments: gc (motion) and gcc (line)
     Plug 'justinmk/vim-sneak'  " jump to a location with s{char}{char}
     " Plug 'tpope/vim-fugitive'  " Git wrapper :G
@@ -275,13 +275,10 @@ set makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
 set errorformat=%f:%l:\ %m
 
 " Movement
-    noremap <Up>    <Nop>
-    noremap <Down>  <Nop>
-    noremap <Left>  <Nop>
-    noremap <Right> <Nop>
     " Jumps between code blocks
     nnoremap <nowait> ] ]]
     nnoremap <nowait> [ [[
+
     " Insert blank lines without entering Insert Mode
     nnoremap <C-J> m`o<Esc>``
     nnoremap <C-K> m`O<Esc>``
