@@ -12,6 +12,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'Xuyuanp/nerdtree-git-plugin'
         " Autoclose nerdtree after file is opened
         let NERDTreeQuitOnOpen=1
+        let NERDTreeShowHidden=1
+        let NERDTreeIgnore = ['\.DAT$', '\.LOG1$', '\.LOG1$']
+        let NERDTreeIgnore += ['\.png$','\.jpg$','\.gif$','\.mp3$','\.flac$', '\.ogg$', '\.mp4$','\.avi$','.webm$','.mkv$','\.pdf$', '\.zip$', '\.tar.gz$', '\.rar$']
 
     Plug 'itchyny/lightline.vim'
 
@@ -26,22 +29,17 @@ call plug#begin('~/.vim/plugged')
     Plug 'Konfekt/FastFold'  " manages auto-folds for better speed
     Plug 'adelarsq/vim-matchit'  " extension matching for % operator
     Plug 'alvan/vim-closetag'  " auto-close HTML tags
-    Plug 'rust-lang/rust.vim'
     Plug 'tmsvg/pear-tree'          " Smarter auto-pairs for quotes, html tags, etc
     Plug 'tpope/vim-commentary'  " toggle comments: gc (motion) and gcc (line)
     Plug 'justinmk/vim-sneak'  " jump to a location with s{char}{char}
     " Plug 'tpope/vim-fugitive'  " Git wrapper :G
-    Plug 'jiangmiao/auto-pairs'  " auto-close pairs with cursor in middle
-    " let g:AutoPairsShortcutToggle = <M-m>
+    " Plug 'jiangmiao/auto-pairs'  " auto-close pairs with cursor in middle
+    " " let g:AutoPairsShortcutToggle = <M-m>
     Plug 'mattn/emmet-vim'
-    Plug '/usr/local/opt/fzf'
-    Plug 'junegunn/fzf.vim'  " fzf must be installed above
     Plug 'junegunn/goyo.vim'
         nnoremap <Leader>z :Goyo<CR>
+        let g:goyo_width = 104
     Plug 'maxmellon/vim-jsx-pretty'
-    Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html']  }
-        let g:prettier#autoformat = 0
-        autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
     Plug 'jeffkreeftmeijer/vim-numbertoggle'  " Manages line number modes
     Plug 'Yggdroot/indentLine'  " vertical lines for indentation level
 
@@ -73,6 +71,8 @@ let g:indentLine_char = '┊'
 " let g:indentLine_first_char = '|'
 let g:indentLine_showFirstIndentLevel = 0
 let g:indentLine_setColors = 0
+" let g:indentLine_fileTypeExclude = ["nerdtree"]  " Fix bug with nerdtree
+" let g:indentLine_bufNameExclude = ['_.', 'NERD_tree.']
 " }}
 
 " lightline
@@ -105,6 +105,14 @@ let g:indentLine_setColors = 0
     set wrap linebreak nolist   " does not change text on break; simply displays on multiple lines
     set textwidth=0
     set wrapmargin=0
+
+" Goyo Config
+    function! s:goyo_enter()
+        set number
+        set relativenumber
+    endfunction
+
+    autocmd! User GoyoEnter nested call <SID>goyo_enter()
 
 " Functionality Settings
     " Save (update) with fewer keystrokes
@@ -143,7 +151,7 @@ let g:indentLine_setColors = 0
         hi! RainbowLevel6 ctermfg=136 guifg=#b57614
         hi! RainbowLevel7 ctermfg=244 guifg=#928374
         hi! RainbowLevel8 ctermfg=237 guifg=#3c3836
-    endif 
+    endif
 
 " Folds
     set foldmethod=syntax
@@ -168,32 +176,6 @@ let g:indentLine_setColors = 0
     set shiftwidth=4  " Determines the amount of whitespace to add in normal mode
     set expandtab  " When on uses space instead of tabs
     set smarttab
-
-    " New configuration
-
-    " tabstop: Set tabstop to tell vim how many columns a tab counts for. Linux kernal
-    " code expects each tab to be eight columns wide. Visual Studio expects
-    " each tab to be four columns wide.
-
-    " expandtab: With this set, hitting tab in insert mode will produce the
-    " appropriate number of spaces
-
-    " shiftwidth: Set to control how manyu columns text is indented with the
-    " reindent operations (<< and >>) and automatic C-style indentation.
-
-    " softtabstop: Controls how many columns vim uses when you hit Tab in
-    " insert mode. If softtabsstop is less than tabstop and expandtab is not
-    " set, vim will use a combination of tabs and spaces to make up the
-    " desired spacing. if softtabstop equals tabstop and expandtab is not set,
-    " vim will always use tbas. When expandtab is set, vim will always use the
-    " appropriate number of spaces.
-
-    " To set each indentation level four spaces, and tabs are not used:
-    " set softtabstop=4 shiftwidth=4 expandtab
-
-    " Show tabs
-    " set list!
-    " set listchars=tab:>-
 
     syntax match Tab /\t/
     hi Tab gui=underline guifg=blue ctermbg=blue
@@ -225,50 +207,6 @@ let g:indentLine_setColors = 0
 
     " clear highlights
     nmap <C-_> :noh<CR>
-
-" fzf
-    "{{{
-        let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
-        let $FZF_DEFAULT_OPTS="--preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null'"
-        let g:fzf_layout = { 'down': '40%' }
-        let g:fzf_nvim_statusline = 0  " disable statusline overwriting
-        let g:fzf_colors =
-        \ { 'fg':      ['fg', 'Normal'],
-          \ 'bg':      ['bg', 'Normal'],
-          \ 'hl':      ['fg', 'Comment'],
-          \ 'fg+':     ['fg', 'Conditional', 'CursorColumn', 'Normal'],
-          \ 'bg+':     ['bg', 'Conditional', 'Conditional'],
-          \ 'hl+':     ['fg', 'Statement'],
-          \ 'info':    ['fg', 'PreProc'],
-          \ 'border':  ['fg', 'Ignore'],
-          \ 'prompt':  ['fg', 'Conditional'],
-          \ 'pointer': ['fg', 'Exception'],
-          \ 'marker':  ['fg', 'Keyword'],
-          \ 'spinner': ['fg', 'Label'],
-          \ 'header':  ['fg', 'Comment'] }
-
-        nnoremap <silent> <leader><space> :Files<CR>
-        nnoremap <silent> <leader>b :Buffers<CR>
-    "}}}
-
-    " Optional
-    command! -bang -nargs=? -complete=dir Files
-      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-    " Optional
-    command! Evals call fzf#run(fzf#wrap({'source': map(filter(map(reverse(range(histnr(':') - 1000, histnr(':'))), 'histget(":", v:val)'),'v:val =~ "^Eval "'), 'substitute(v:val, "^Eval ", "", "")'), 'sink': function('<sid>eval_handler')}))
-
-    " An action can be a reference to a function that processes selected lines
-    function! s:build_quickfix_list(lines)
-      call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
-      copen
-      cc
-    endfunction
-
-    let g:fzf_action = {
-      \ 'ctrl-q': function('s:build_quickfix_list'),
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-x': 'split',
-      \ 'ctrl-v': 'vsplit' }
 
 " pylint configuration
 set makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
@@ -458,17 +396,6 @@ set errorformat=%f:%l:\ %m
                     \ pumvisible() ? "\<C-n>" :
                     \ <SID>check_back_space() ? "\<Tab>" :
                     \ coc#refresh()
-
-        " use K to show documentation in preview window
-        nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-        function! s:show_documentation()
-            if (index(['vim','help'], &filetype) >= 0)
-                execute 'h '.expand('<cword>')
-            else
-                call CocAction('doHover')
-            endif
-        endfunction
 
         " Remap for rename current word
         nmap <leader>rn <Plug>(coc-rename)
