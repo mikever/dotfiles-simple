@@ -205,7 +205,8 @@ let g:indentLine_setColors = 0
 
 " Searching
     set incsearch           " search as characters are entered
-    hi Search guibg=guibg guifg=LightBlue gui=italic,underline
+    hi Search guibg=guibg guifg=LightBlue gui=underline,italic
+    hi Search cterm=underline,italic ctermfg=LightBlue ctermbg=black
     set hlsearch            " highlight all matches
     set smartcase           " search is case-sensitive if it contains an uppercase letter
 
