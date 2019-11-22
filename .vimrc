@@ -17,7 +17,6 @@ call plug#begin('~/.vim/plugged')
         let NERDTreeIgnore += ['\.png$','\.jpg$','\.gif$','\.mp3$','\.flac$', '\.ogg$', '\.mp4$','\.avi$','.webm$','.mkv$','\.pdf$', '\.zip$', '\.tar.gz$', '\.rar$']
 
     Plug 'itchyny/lightline.vim'
-
     Plug 'stephpy/vim-yaml'
     Plug 'kshenoy/vim-signature'  " toggle and display marks
     Plug 'moll/vim-node'
@@ -33,7 +32,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-commentary'  " toggle comments: gc (motion) and gcc (line)
     Plug 'justinmk/vim-sneak'  " jump to a location with s{char}{char}
     " Plug 'tpope/vim-fugitive'  " Git wrapper :G
-    " Plug 'jiangmiao/auto-pairs'  " auto-close pairs with cursor in middle
+    Plug 'jiangmiao/auto-pairs'  " auto-close pairs with cursor in middle
     " " let g:AutoPairsShortcutToggle = <M-m>
     Plug 'mattn/emmet-vim'
     Plug 'junegunn/goyo.vim'
@@ -118,6 +117,10 @@ let g:indentLine_setColors = 0
     " Save (update) with fewer keystrokes
         nnoremap <C-S> :update<cr>
         inoremap <C-S> <Esc>:update<cr>gi
+
+    " Quit with fewer keystrokes
+        nnoremap <C-Q> :quit<cr>
+        inoremap <C-Q> <Esc>:quit<cr>
 
     " Set the working directory to wherever the open file lives `:set autochdir!` to toggle
     set autochdir
@@ -209,8 +212,8 @@ let g:indentLine_setColors = 0
     nmap <C-_> :noh<CR>
 
 " pylint configuration
-set makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
-set errorformat=%f:%l:\ %m
+" set makeprg=pylint\ --reports=n\ --output-format=parseable\ %:p
+" set errorformat=%f:%l:\ %m
 
 " Movement
     " Jumps between code blocks
@@ -240,7 +243,7 @@ set errorformat=%f:%l:\ %m
         autocmd!
         autocmd VimEnter * highlight clear SignColumn
         " autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md,*.rb :call <SID>StripTrailingWhitespaces()
-        autocmd BufEnter *.cls setlocal filetype=java
+        " autocmd BufEnter *.cls setlocal filetype=java
         " autocmd BufEnter *.zsh-theme setlocal filetype=zsh
         autocmd BufEnter Makefile setlocal noexpandtab
         autocmd BufEnter *.sh,*.js,*.md setlocal tabstop=2
@@ -259,8 +262,8 @@ set errorformat=%f:%l:\ %m
     set shell=sh
 
 " Testing
-    let test#strategy = 'neovim'
-    let test#python#runner = 'nose'
+"     let test#strategy = 'neovim'
+"     let test#python#runner = 'nose'
 
 " Backups
     set backup
