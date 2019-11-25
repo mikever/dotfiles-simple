@@ -30,8 +30,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'alvan/vim-closetag'  " auto-close HTML tags
     Plug 'tmsvg/pear-tree'          " Smarter auto-pairs for quotes, html tags, etc
     Plug 'tpope/vim-commentary'  " toggle comments: gc (motion) and gcc (line)
+    Plug 'tpope/vim-surround'
+        " cs - change surround;
+        " cst - change surround tag;
+        " ds - delete surround;
+        " ysiw - yank surround inner word
+        " yss - yank surround line
     Plug 'justinmk/vim-sneak'  " jump to a location with s{char}{char}
-    " Plug 'tpope/vim-fugitive'  " Git wrapper :G
     Plug 'jiangmiao/auto-pairs'  " auto-close pairs with cursor in middle
     " " let g:AutoPairsShortcutToggle = <M-m>
     Plug 'mattn/emmet-vim'
