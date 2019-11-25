@@ -5,6 +5,7 @@
       autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 
+
 " Plugins will be downloaded under the specified directory
 call plug#begin('~/.vim/plugged')
 
@@ -24,11 +25,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'leafgarland/typescript-vim'
     Plug 'thiagoalessio/rainbow_levels.vim'  " toggle rainbow level colors
-    Plug 'tmhedberg/SimpylFold'  " Helps with better folds
+    Plug 'tmhedberg/SimpylFold'  " Helps with better folds for python
     Plug 'Konfekt/FastFold'  " manages auto-folds for better speed
     Plug 'adelarsq/vim-matchit'  " extension matching for % operator
     Plug 'alvan/vim-closetag'  " auto-close HTML tags
-    Plug 'tmsvg/pear-tree'          " Smarter auto-pairs for quotes, html tags, etc
     Plug 'tpope/vim-commentary'  " toggle comments: gc (motion) and gcc (line)
     Plug 'tpope/vim-surround'
         " cs - change surround;
@@ -62,7 +62,7 @@ call plug#begin('~/.vim/plugged')
     let g:gruvbox_contrast_dark = 'soft'
     set background=dark
     syntax enable
-    set colorcolumn=100
+    " set colorcolumn=100
     " set t_Co=256  " fixes glitch? in colors when using vim with tmux
 
 " IndentLine {{
@@ -102,8 +102,8 @@ let g:indentLine_setColors = 0
     set relativenumber
     set showcmd             " show command in bottom bar
     set nocursorline        " highlight current line
-    set wildmenu
-    set lazyredraw
+    set wildmenu            " display command line's tab complete options as a menu
+    set lazyredraw          " don't update screen during macro and script execution
     set showmatch           " higlight matching parenthesis
     set fillchars+=vert:┃
     set wrap linebreak nolist   " does not change text on break; simply displays on multiple lines
@@ -162,8 +162,31 @@ let g:indentLine_setColors = 0
     endif
 
 " Folds
-    set foldmethod=syntax
-    set nofoldenable
+    set foldmethod=syntax "syntax highlighting items specify folds
+    set foldcolumn=1 "defines 1 col at window left, to indicate folding
+    let javaScript_fold=1 "activate folding by JS syntax
+    set foldlevelstart=99 "start file with all folds opened
+
+    " set nofoldenable  " Folds are unfolded when file is first opened
+
+" FastFold
+    nmap zuz <Plug>(FastFoldUpdate)
+    let g:fastfold_savehook = 1
+    let g:fastfold_fold_command_suffixes =  ['x','X','a','A','o','O','c','C']
+    let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
+
+    let g:markdown_folding = 1
+    let g:tex_fold_enabled = 1
+    let g:vimsyn_folding = 'af'
+    let g:xml_syntax_folding = 1
+    let g:javaScript_fold = 1
+    let g:sh_fold_enabled= 7
+    let g:ruby_fold = 1
+    let g:perl_fold = 1
+    let g:perl_fold_blocks = 1
+    let g:r_syntax_folding = 1
+    let g:rust_fold = 1
+    let g:php_folding = 1
 
 " Paste
     set pastetoggle=<F5>        " <FN>5 on my keeb
@@ -181,7 +204,7 @@ let g:indentLine_setColors = 0
 
     set tabstop=4  " Width of tab character
     set softtabstop=0  " Fine tunes the amount of whitespace added
-    set shiftwidth=4  " Determines the amount of whitespace to add in normal mode
+    set shiftwidth=4  " Determines the amount of whitespace to add in normal mode, and configures fold level
     set expandtab  " When on uses space instead of tabs
     set smarttab
 
@@ -322,6 +345,7 @@ let g:indentLine_setColors = 0
 
 " -- EMMET CONFIG --
     " redefine trigger key. Type `,,` to trigger
+    " let g:user_emmet_expandabbr_key = '<Tab>'  " <Tab> , to trigger, or default <C-Y>
     let g:user_emmet_leader_key=','
 
 " Functions
