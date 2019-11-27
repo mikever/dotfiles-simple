@@ -45,7 +45,6 @@ call plug#begin('~/.vim/plugged')
         let g:goyo_width = 104
     Plug 'maxmellon/vim-jsx-pretty'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'  " Manages line number modes
-    Plug 'Yggdroot/indentLine'  " vertical lines for indentation level
 
     " ColorSchemes
     Plug 'morhetz/gruvbox'
@@ -62,22 +61,8 @@ call plug#begin('~/.vim/plugged')
     let g:gruvbox_contrast_dark = 'soft'
     set background=dark
     syntax enable
-    " set colorcolumn=100
+    set colorcolumn=100
     " set t_Co=256  " fixes glitch? in colors when using vim with tmux
-
-" IndentLine {{
-let g:indentLine_char = '┊'
-" let g:indentLine_char = '│'
-" let g:indentLine_char = '┋'
-" let g:indentLine_char = '┇'
-" let g:indentLine_char = ''
-" let g:indentLine_char = ''
-" let g:indentLine_first_char = '|'
-let g:indentLine_showFirstIndentLevel = 0
-let g:indentLine_setColors = 0
-" let g:indentLine_fileTypeExclude = ["nerdtree"]  " Fix bug with nerdtree
-" let g:indentLine_bufNameExclude = ['_.', 'NERD_tree.']
-" }}
 
 " lightline
     let g:lightline = {
