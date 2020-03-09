@@ -76,6 +76,12 @@ call plug#begin('~/.vim/plugged')
             \ }
     endif
 
+" Change background between light/dark
+    nnoremap  <leader>B :<c-u>exe "colors" (g:colors_name =~# "dark"
+    \ ? substitute(g:colors_name, 'dark', 'light', '')
+    \ : substitute(g:colors_name, 'light', 'dark', '')
+    \ )<cr>
+
 " UI Layout
     set number              " show line numbers
     set relativenumber
