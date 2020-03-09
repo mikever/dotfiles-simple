@@ -20,11 +20,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'itchyny/lightline.vim'
     Plug 'stephpy/vim-yaml'
     Plug 'kshenoy/vim-signature'  " toggle and display marks
-    Plug 'moll/vim-node'
     Plug 'luochen1990/rainbow'  " rainbow parentheses
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'leafgarland/typescript-vim'
-    Plug 'thiagoalessio/rainbow_levels.vim'  " toggle rainbow level colors
     Plug 'tmhedberg/SimpylFold'  " Helps with better folds for python
     Plug 'Konfekt/FastFold'  " manages auto-folds for better speed
     Plug 'adelarsq/vim-matchit'  " extension matching for % operator
@@ -40,9 +37,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'jiangmiao/auto-pairs'  " auto-close pairs with cursor in middle
     " " let g:AutoPairsShortcutToggle = <M-m>
     Plug 'mattn/emmet-vim'
-    Plug 'junegunn/goyo.vim'
-        nnoremap <Leader>z :Goyo<CR>
-        let g:goyo_width = 104
     Plug 'maxmellon/vim-jsx-pretty'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'  " Manages line number modes
 
@@ -51,22 +45,22 @@ call plug#begin('~/.vim/plugged')
     Plug 'jacoborus/tender.vim'
     Plug 'rakr/vim-two-firewatch'
     Plug 'romainl/Apprentice'
-
+    Plug 'vivekvjn/vim-solarized8'
 
     " Plug List ends here. Plugins become visible to Vim after this call
     call plug#end()
 
 " Theme/Layout
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
-    colorscheme gruvbox
-    let g:gruvbox_contrast_dark = 'soft'
     set background=dark
     syntax enable
+    colorscheme solarized8_dark
+    " let g:gruvbox_contrast_dark = 'soft'
     set colorcolumn=100
 
 " lightline
     let g:lightline = {
-        \ 'colorscheme': 'darcula',
+        \ 'colorscheme': 'solarized',
         \ }
 
     set laststatus=2  " make sure bar isn't a blank black line
@@ -75,10 +69,10 @@ call plug#begin('~/.vim/plugged')
 " vimdiff colorscheme
     if &diff
         syntax off
-        colorscheme apprentice
+        colorscheme solarized_dark
 
         let g:lightline = {
-            \ 'colorscheme': 'apprentice',
+            \ 'colorscheme': 'solarized',
             \ }
     endif
 
@@ -94,14 +88,6 @@ call plug#begin('~/.vim/plugged')
     set wrap linebreak nolist   " does not change text on break; simply displays on multiple lines
     set textwidth=0
     set wrapmargin=0
-
-" Goyo Config
-    function! s:goyo_enter()
-        set number
-        set relativenumber
-    endfunction
-
-    autocmd! User GoyoEnter nested call <SID>goyo_enter()
 
 " Functionality Settings
     " Save (update) with fewer keystrokes
@@ -123,28 +109,6 @@ call plug#begin('~/.vim/plugged')
 
     " Rainbow Levels
     map <Leader>l :RainbowLevelsToggle<CR>
-
-    if &l:background == 'dark'
-        hi! RainbowLevel0 ctermfg=142 guifg=#b8bb26
-        hi! RainbowLevel1 ctermfg=108 guifg=#8ec07c
-        hi! RainbowLevel2 ctermfg=109 guifg=#83a598
-        hi! RainbowLevel3 ctermfg=175 guifg=#d3869b
-        hi! RainbowLevel4 ctermfg=167 guifg=#fb4934
-        hi! RainbowLevel5 ctermfg=208 guifg=#fe8019
-        hi! RainbowLevel6 ctermfg=214 guifg=#fabd2f
-        hi! RainbowLevel7 ctermfg=223 guifg=#ebdbb2
-        hi! RainbowLevel8 ctermfg=245 guifg=#928374
-    else
-        hi! RainbowLevel0 ctermfg=100 guifg=#79740e
-        hi! RainbowLevel1 ctermfg=066 guifg=#427b58
-        hi! RainbowLevel2 ctermfg=024 guifg=#076678
-        hi! RainbowLevel3 ctermfg=096 guifg=#8f3f71
-        hi! RainbowLevel4 ctermfg=088 guifg=#9d0006
-        hi! RainbowLevel5 ctermfg=130 guifg=#af3a03
-        hi! RainbowLevel6 ctermfg=136 guifg=#b57614
-        hi! RainbowLevel7 ctermfg=244 guifg=#928374
-        hi! RainbowLevel8 ctermfg=237 guifg=#3c3836
-    endif
 
 " Folds
     set foldmethod=syntax "syntax highlighting items specify folds
@@ -411,36 +375,36 @@ call plug#begin('~/.vim/plugged')
            return !col || getline('.')[col - 1]  =~ '\s'
         endfunction
 
-        inoremap <silent><expr> <Tab>
-                    \ pumvisible() ? "\<C-n>" :
-                    \ <SID>check_back_space() ? "\<Tab>" :
-                    \ coc#refresh()
+       " inoremap <silent><expr> <Tab>
+       "             \ pumvisible() ? "\<C-n>" :
+       "             \ <SID>check_back_space() ? "\<Tab>" :
+       "             \ coc#refresh()
 
-        " Remap for rename current word
-        nmap <leader>rn <Plug>(coc-rename)
+       "  " Remap for rename current word
+       "  nmap <leader>rn <Plug>(coc-rename)
 
-        " Remap for format selected region
-        xmap <leader>f  <Plug>(coc-format-selected)
-        nmap <leader>f  <Plug>(coc-format-selected)
+       "  " Remap for format selected region
+       "  xmap <leader>f  <Plug>(coc-format-selected)
+       "  nmap <leader>f  <Plug>(coc-format-selected)
 
-        " Use `:Format` to format current buffer
-        command! -nargs=0 Format :call CocAction('format')
+       "  " Use `:Format` to format current buffer
+       "  command! -nargs=0 Format :call CocAction('format')
 
-        " Using CocList
-        " Show all diagnostics
-        nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-        " Manage extensions
-        nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-        " Show commands
-        nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-        " Find symbol of current document
-        nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-        " Search workspace symbols
-        nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-        " Do default action for next item.
-        nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-        " Do default action for previous item.
-        nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-        " Resume latest coc list
-        nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+       "  " Using CocList
+       "  " Show all diagnostics
+       "  nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+       "  " Manage extensions
+       "  nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+       "  " Show commands
+       "  nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+       "  " Find symbol of current document
+       "  nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+       "  " Search workspace symbols
+       "  nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+       "  " Do default action for next item.
+       "  nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+       "  " Do default action for previous item.
+       "  nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+       "  " Resume latest coc list
+       "  nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
