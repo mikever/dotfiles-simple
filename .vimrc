@@ -52,11 +52,14 @@ call plug#begin('~/.vim/plugged')
 
 " Theme/Layout
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
-    set background=dark
+    set background=light
     syntax enable
-    colorscheme solarized8_dark
+    colorscheme solarized8_light
     " let g:gruvbox_contrast_dark = 'soft'
     set colorcolumn=100
+
+    " Solarized settings
+    " let g:solarized_italics=1
 
 " lightline
     let g:lightline = {
@@ -69,7 +72,7 @@ call plug#begin('~/.vim/plugged')
 " vimdiff colorscheme
     if &diff
         syntax off
-        colorscheme solarized_dark
+        colorscheme solarized8_light
 
         let g:lightline = {
             \ 'colorscheme': 'solarized',
@@ -188,8 +191,8 @@ call plug#begin('~/.vim/plugged')
 
 " Searching
     set incsearch           " search as characters are entered
-    hi Search guibg=guibg guifg=white gui=underline
-    hi Search cterm=underline ctermfg=white ctermbg=black
+    " hi Search guibg=guibg guifg=white gui=underline
+    " hi Search cterm=underline ctermfg=white ctermbg=black
     set hlsearch            " highlight all matches
     set smartcase           " search is case-sensitive if it contains an uppercase letter
 
