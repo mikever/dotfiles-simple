@@ -16,6 +16,8 @@ call plug#begin('~/.vim/plugged')
         let NERDTreeShowHidden=1
         let NERDTreeIgnore = ['\.DAT$', '\.LOG1$', '\.LOG1$']
         let NERDTreeIgnore += ['\.png$','\.jpg$','\.gif$','\.mp3$','\.flac$', '\.ogg$', '\.mp4$','\.avi$','.webm$','.mkv$','\.pdf$', '\.zip$', '\.tar.gz$', '\.rar$']
+    let g:NERDTreeShowLineNumbers=1
+    autocmd BufEnter NERD_* setlocal rnu
 
     Plug 'itchyny/lightline.vim'
     Plug 'stephpy/vim-yaml'
@@ -52,9 +54,9 @@ call plug#begin('~/.vim/plugged')
 
 " Theme/Layout
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
-    set background=light
+    set background=dark
     syntax enable
-    colorscheme solarized8_light
+    colorscheme gruvbox
     " let g:gruvbox_contrast_dark = 'soft'
     set colorcolumn=100
 
@@ -63,7 +65,7 @@ call plug#begin('~/.vim/plugged')
 
 " lightline
     let g:lightline = {
-        \ 'colorscheme': 'solarized',
+        \ 'colorscheme': 'gruvbox',
         \ }
 
     set laststatus=2  " make sure bar isn't a blank black line
@@ -72,10 +74,10 @@ call plug#begin('~/.vim/plugged')
 " vimdiff colorscheme
     if &diff
         syntax off
-        colorscheme solarized8_light
+        colorscheme gruvbox
 
         let g:lightline = {
-            \ 'colorscheme': 'solarized',
+            \ 'colorscheme': 'gruvbox',
             \ }
     endif
 
@@ -301,119 +303,44 @@ call plug#begin('~/.vim/plugged')
                 let g:closetag_close_shortcut = '<leader>>'
 
 
-" -- EMMET CONFIG --
+" Emmet Config
     " redefine trigger key. Type `,,` to trigger
-    " let g:user_emmet_expandabbr_key = '<Tab>'  " <Tab> , to trigger, or default <C-Y>
     let g:user_emmet_leader_key=','
 
 " Functions
+    if exists('$TMUX')
+        " tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
+        let &t_SI .= "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+        let &t_EI .= "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+        autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033[0 q\033\\"
+    else
+        let &t_SI .= "\<Esc>[4 q"
+        let &t_EI .= "\<Esc>[2 q"
+        autocmd VimLeave * silent !echo -ne "\033[0 q"
+    endi
 
-    " Changing cursor shape per mode
-        " 1 or 0 -> blinking block
-        " 2 -> solid block
-        " 3 -> blinking underscore
-        " 4 -> solid underscore
-        if exists('$TMUX')
-            " tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
-            let &t_SI .= "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-            let &t_EI .= "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-            autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033[0 q\033\\"
-        else
-            let &t_SI .= "\<Esc>[4 q"
-            let &t_EI .= "\<Esc>[2 q"
-            autocmd VimLeave * silent !echo -ne "\033[0 q"
-        endi
+    function! <SID>CleanFile()
+        " Preparation: save last search, and cursor position.
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+        " Do the business:
+        %!git stripspace
+        " Clean up: restore previous search history, and cursor position
+        let @/=_s
+        call cursor(l, c)
+    endfunc
 
-    " strips trailing whitespace at the end of files. this
-    " is called on buffer write in the autogroup above.
-        " function! <SID>StripTrailingWhitespaces()
-        "     " save last search & cursor position
-        "     let _s=@/
-        "     let l = line(".")
-        "     let c = col(".")
-        "     %s/\s\+$//e
-        "     let @/=_s
-        "     call cursor(l, c)
-        " endfunc
+    function! <SID>RunFile()
+        let ext = expand("%:e")
+        if(ext == "go")
+            :GoRun
+        endif
+    endfunc
 
-        function! <SID>CleanFile()
-            " Preparation: save last search, and cursor position.
-            let _s=@/
-            let l = line(".")
-            let c = col(".")
-            " Do the business:
-            %!git stripspace
-            " Clean up: restore previous search history, and cursor position
-            let @/=_s
-            call cursor(l, c)
-        endfunc
-
-        function! <SID>RunFile()
-            let ext = expand("%:e")
-            if(ext == "go")
-                :GoRun
-            endif
-        endfunc
-
-        function! <SID>BuildFile()
-            let ext = expand("%:e")
-            if(ext == "go")
-                :GoBuild
-            endif
-        endfunc
-
-    " Coc Configuration
-        " better display for messages
-        set cmdheight=2
-
-        " diagnostic messages default is 4000, but will give bad experience
-        set updatetime=300
-
-        " don't give |ins-completion-menu| messages
-        set shortmess+=c
-
-        " always show signcolumns
-        " set signcolumn=yes
-
-        " get correct comment highlighting:
-        autocmd FileType json syntax match Comment +\/\/.\+$+
-
-        " use <tab> for trigger completion and navigate to the next complete item
-        function! s:check_back_space() abort
-           let col = col('.') - 1
-           return !col || getline('.')[col - 1]  =~ '\s'
-        endfunction
-
-       " inoremap <silent><expr> <Tab>
-       "             \ pumvisible() ? "\<C-n>" :
-       "             \ <SID>check_back_space() ? "\<Tab>" :
-       "             \ coc#refresh()
-
-       "  " Remap for rename current word
-       "  nmap <leader>rn <Plug>(coc-rename)
-
-       "  " Remap for format selected region
-       "  xmap <leader>f  <Plug>(coc-format-selected)
-       "  nmap <leader>f  <Plug>(coc-format-selected)
-
-       "  " Use `:Format` to format current buffer
-       "  command! -nargs=0 Format :call CocAction('format')
-
-       "  " Using CocList
-       "  " Show all diagnostics
-       "  nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-       "  " Manage extensions
-       "  nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-       "  " Show commands
-       "  nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-       "  " Find symbol of current document
-       "  nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-       "  " Search workspace symbols
-       "  nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-       "  " Do default action for next item.
-       "  nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-       "  " Do default action for previous item.
-       "  nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-       "  " Resume latest coc list
-       "  nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
+    function! <SID>BuildFile()
+        let ext = expand("%:e")
+        if(ext == "go")
+            :GoBuild
+        endif
+    endfunc
