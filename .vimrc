@@ -20,6 +20,7 @@ call plug#begin('~/.vim/plugged')
     autocmd BufEnter NERD_* setlocal rnu
 
     Plug 'itchyny/lightline.vim'
+    Plug 'shinchu/lightline-gruvbox.vim'
     Plug 'stephpy/vim-yaml'
     Plug 'kshenoy/vim-signature'  " toggle and display marks
     Plug 'luochen1990/rainbow'  " rainbow parentheses
@@ -44,6 +45,7 @@ call plug#begin('~/.vim/plugged')
 
     " ColorSchemes
     Plug 'morhetz/gruvbox'
+    Plug 'lifepillar/vim-gruvbox8'
     Plug 'jacoborus/tender.vim'
     Plug 'rakr/vim-two-firewatch'
     Plug 'romainl/Apprentice'
@@ -56,8 +58,7 @@ call plug#begin('~/.vim/plugged')
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
     set background=dark
     syntax enable
-    colorscheme gruvbox_hard
-    " let g:gruvbox_contrast_dark = 'soft'
+    colorscheme gruvbox8
     set colorcolumn=100
 
     " Solarized settings
@@ -74,7 +75,7 @@ call plug#begin('~/.vim/plugged')
 " vimdiff colorscheme
     if &diff
         syntax off
-        colorscheme gruvbox_hard
+        colorscheme gruvbox8
 
         let g:lightline = {
             \ 'colorscheme': 'gruvbox',
@@ -193,8 +194,7 @@ call plug#begin('~/.vim/plugged')
 
 " Searching
     set incsearch           " search as characters are entered
-    " hi Search guibg=guibg guifg=white gui=underline
-    " hi Search cterm=underline ctermfg=white ctermbg=black
+    hi Search guifg=yellow3
     set hlsearch            " highlight all matches
     set smartcase           " search is case-sensitive if it contains an uppercase letter
 
