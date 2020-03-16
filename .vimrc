@@ -56,7 +56,7 @@ call plug#begin('~/.vim/plugged')
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
     set background=dark
     syntax enable
-    colorscheme gruvbox
+    colorscheme gruvbox_hard
     " let g:gruvbox_contrast_dark = 'soft'
     set colorcolumn=100
 
@@ -74,7 +74,7 @@ call plug#begin('~/.vim/plugged')
 " vimdiff colorscheme
     if &diff
         syntax off
-        colorscheme gruvbox
+        colorscheme gruvbox_hard
 
         let g:lightline = {
             \ 'colorscheme': 'gruvbox',
