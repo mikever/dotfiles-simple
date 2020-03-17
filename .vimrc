@@ -56,7 +56,7 @@ call plug#begin('~/.vim/plugged')
 
 " Theme/Layout
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
-    set background=dark
+    set background=light
     syntax enable
     colorscheme gruvbox8
     set colorcolumn=100
@@ -66,7 +66,7 @@ call plug#begin('~/.vim/plugged')
 
 " lightline
     let g:lightline = {
-        \ 'colorscheme': 'gruvbox',
+        \ 'colorscheme': 'default',
         \ }
 
     set laststatus=2  " make sure bar isn't a blank black line
@@ -78,7 +78,7 @@ call plug#begin('~/.vim/plugged')
         colorscheme gruvbox8
 
         let g:lightline = {
-            \ 'colorscheme': 'gruvbox',
+            \ 'colorscheme': 'default',
             \ }
     endif
 
@@ -194,7 +194,9 @@ call plug#begin('~/.vim/plugged')
 
 " Searching
     set incsearch           " search as characters are entered
-    hi Search guifg=yellow3
+    " hi Search guibg=yellow3 ctermbg=148
+    " hi Search guifg=lightblue ctermfg=152
+    hi Search guifg=OliveDrab2 ctermfg=148
     set hlsearch            " highlight all matches
     set smartcase           " search is case-sensitive if it contains an uppercase letter
 
