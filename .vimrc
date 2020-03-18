@@ -43,6 +43,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'maxmellon/vim-jsx-pretty'
     Plug 'jeffkreeftmeijer/vim-numbertoggle'  " Manages line number modes
 
+    " Extra tools
+    Plug 'nvie/vim-flake8'
+
     " ColorSchemes
     Plug 'morhetz/gruvbox'
     Plug 'lifepillar/vim-gruvbox8'
@@ -50,6 +53,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'rakr/vim-two-firewatch'
     Plug 'romainl/Apprentice'
     Plug 'vivekvjn/vim-solarized8'
+    Plug 'chriskempson/base16-vim'
 
     " Plug List ends here. Plugins become visible to Vim after this call
     call plug#end()
@@ -58,7 +62,8 @@ call plug#begin('~/.vim/plugged')
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
     set background=light
     syntax enable
-    colorscheme gruvbox8
+    " colorscheme gruvbox8
+    colorscheme base16-atelier-dune-light
     set colorcolumn=100
 
     " Solarized settings
@@ -87,6 +92,14 @@ call plug#begin('~/.vim/plugged')
     \ ? substitute(g:colors_name, 'dark', 'light', '')
     \ : substitute(g:colors_name, 'light', 'dark', '')
     \ )<cr>
+
+" Flake8
+    autocmd BufWritePost *.py call Flake8#Flake8()
+
+" Prettier
+    " let g:prettier#autoformat_require_pragma = 0
+    " let g:prettier#config#print_width = 100
+    " let g:prettier#config#semi = 'false'
 
 " UI Layout
     set number              " show line numbers
