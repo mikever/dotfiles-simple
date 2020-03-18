@@ -60,18 +60,18 @@ call plug#begin('~/.vim/plugged')
 
 " Theme/Layout
     set t_Co=256  " fixes glitch in colors when using vim with tmux; set before colorscheme
-    set background=light
+    set background=dark
     syntax enable
-    " colorscheme gruvbox8
-    colorscheme base16-atelier-dune-light
+    colorscheme solarized8_dark_high
+    " colorscheme base16-atelier-dune-light
     set colorcolumn=100
 
     " Solarized settings
-    " let g:solarized_italics=1
+    let g:solarized_italics=1
 
 " lightline
     let g:lightline = {
-        \ 'colorscheme': 'default',
+        \ 'colorscheme': 'solarized',
         \ }
 
     set laststatus=2  " make sure bar isn't a blank black line
@@ -80,10 +80,10 @@ call plug#begin('~/.vim/plugged')
 " vimdiff colorscheme
     if &diff
         syntax off
-        colorscheme gruvbox8
+        colorscheme solarized8_dark_high
 
         let g:lightline = {
-            \ 'colorscheme': 'default',
+            \ 'colorscheme': 'solarized',
             \ }
     endif
 
